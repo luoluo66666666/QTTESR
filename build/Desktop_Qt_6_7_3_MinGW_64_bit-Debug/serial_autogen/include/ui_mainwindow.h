@@ -59,7 +59,7 @@ public:
     QVBoxLayout *verticalLayout;
     QPushButton *Send_po;
     QPushButton *Clearsend_po;
-    QWidget *widget;
+    QWidget *layoutWidget3;
     QGridLayout *gridLayout_3;
     QLabel *label_8;
     QCheckBox *Sendhex_po;
@@ -67,6 +67,8 @@ public:
     QCheckBox *Timesend_po;
     QSpinBox *Sendms_po;
     QLabel *label_9;
+    QLabel *Led_status;
+    QPushButton *Openfile_po;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -218,42 +220,48 @@ public:
 
         verticalLayout->addWidget(Clearsend_po);
 
-        widget = new QWidget(centralwidget);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(20, 373, 150, 70));
-        gridLayout_3 = new QGridLayout(widget);
+        layoutWidget3 = new QWidget(centralwidget);
+        layoutWidget3->setObjectName("layoutWidget3");
+        layoutWidget3->setGeometry(QRect(20, 373, 150, 70));
+        gridLayout_3 = new QGridLayout(layoutWidget3);
         gridLayout_3->setObjectName("gridLayout_3");
         gridLayout_3->setContentsMargins(0, 0, 0, 0);
-        label_8 = new QLabel(widget);
+        label_8 = new QLabel(layoutWidget3);
         label_8->setObjectName("label_8");
 
         gridLayout_3->addWidget(label_8, 0, 0, 1, 1);
 
-        Sendhex_po = new QCheckBox(widget);
+        Sendhex_po = new QCheckBox(layoutWidget3);
         Sendhex_po->setObjectName("Sendhex_po");
 
         gridLayout_3->addWidget(Sendhex_po, 1, 0, 1, 1);
 
-        Senewline_po = new QCheckBox(widget);
+        Senewline_po = new QCheckBox(layoutWidget3);
         Senewline_po->setObjectName("Senewline_po");
 
         gridLayout_3->addWidget(Senewline_po, 1, 1, 1, 2);
 
-        Timesend_po = new QCheckBox(widget);
+        Timesend_po = new QCheckBox(layoutWidget3);
         Timesend_po->setObjectName("Timesend_po");
 
         gridLayout_3->addWidget(Timesend_po, 2, 0, 1, 1);
 
-        Sendms_po = new QSpinBox(widget);
+        Sendms_po = new QSpinBox(layoutWidget3);
         Sendms_po->setObjectName("Sendms_po");
 
         gridLayout_3->addWidget(Sendms_po, 2, 1, 1, 1);
 
-        label_9 = new QLabel(widget);
+        label_9 = new QLabel(layoutWidget3);
         label_9->setObjectName("label_9");
 
         gridLayout_3->addWidget(label_9, 2, 2, 1, 1);
 
+        Led_status = new QLabel(centralwidget);
+        Led_status->setObjectName("Led_status");
+        Led_status->setGeometry(QRect(170, 20, 31, 16));
+        Openfile_po = new QPushButton(centralwidget);
+        Openfile_po->setObjectName("Openfile_po");
+        Openfile_po->setGeometry(QRect(20, 470, 75, 24));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -318,6 +326,8 @@ public:
         Senewline_po->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201\346\226\260\350\241\214", nullptr));
         Timesend_po->setText(QCoreApplication::translate("MainWindow", "\350\207\252\345\212\250\345\217\221\351\200\201", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "ms", nullptr));
+        Led_status->setText(QCoreApplication::translate("MainWindow", "led1", nullptr));
+        Openfile_po->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\274\200\346\226\207\344\273\266", nullptr));
     } // retranslateUi
 
 };

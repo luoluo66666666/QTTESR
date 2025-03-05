@@ -54,7 +54,11 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "lbl",
     "prefix",
     "num",
-    "setNumOnLabel"
+    "setNumOnLabel",
+    "setLedState",
+    "color",
+    "size",
+    "openFile"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -67,7 +71,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -75,18 +79,20 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   86,    2, 0x08,    1 /* Private */,
-       3,    1,   87,    2, 0x08,    2 /* Private */,
-       5,    1,   90,    2, 0x08,    4 /* Private */,
-       6,    0,   93,    2, 0x08,    6 /* Private */,
-       7,    0,   94,    2, 0x08,    7 /* Private */,
-       8,    0,   95,    2, 0x08,    8 /* Private */,
-       9,    0,   96,    2, 0x08,    9 /* Private */,
-      10,    0,   97,    2, 0x08,   10 /* Private */,
-      11,    1,   98,    2, 0x08,   11 /* Private */,
-      13,    0,  101,    2, 0x08,   13 /* Private */,
-      14,    3,  102,    2, 0x08,   14 /* Private */,
-      19,    3,  109,    2, 0x08,   18 /* Private */,
+       1,    0,   98,    2, 0x08,    1 /* Private */,
+       3,    1,   99,    2, 0x08,    2 /* Private */,
+       5,    1,  102,    2, 0x08,    4 /* Private */,
+       6,    0,  105,    2, 0x08,    6 /* Private */,
+       7,    0,  106,    2, 0x08,    7 /* Private */,
+       8,    0,  107,    2, 0x08,    8 /* Private */,
+       9,    0,  108,    2, 0x08,    9 /* Private */,
+      10,    0,  109,    2, 0x08,   10 /* Private */,
+      11,    1,  110,    2, 0x08,   11 /* Private */,
+      13,    0,  113,    2, 0x08,   13 /* Private */,
+      14,    3,  114,    2, 0x08,   14 /* Private */,
+      19,    3,  121,    2, 0x08,   18 /* Private */,
+      20,    2,  128,    2, 0x08,   22 /* Private */,
+      23,    0,  133,    2, 0x08,   25 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -101,6 +107,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 15, QMetaType::QString, QMetaType::Long,   16,   17,   18,
     QMetaType::Void, 0x80000000 | 15, QMetaType::QString, QMetaType::Long,   16,   17,   18,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int,   21,   22,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -146,7 +154,13 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QLabel *, std::false_type>,
         QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        QtPrivate::TypeAndForceComplete<long, std::false_type>
+        QtPrivate::TypeAndForceComplete<long, std::false_type>,
+        // method 'setLedState'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'openFile'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
@@ -171,6 +185,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 9: _t->on_Checkseial_po_clicked(); break;
         case 10: _t->updateSendRecvCount((*reinterpret_cast< std::add_pointer_t<QLabel*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<long>>(_a[3]))); break;
         case 11: _t->setNumOnLabel((*reinterpret_cast< std::add_pointer_t<QLabel*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<long>>(_a[3]))); break;
+        case 12: _t->setLedState((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 13: _t->openFile(); break;
         default: ;
         }
     }
@@ -195,13 +211,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 14)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 12;
+        _id -= 14;
     }
     return _id;
 }

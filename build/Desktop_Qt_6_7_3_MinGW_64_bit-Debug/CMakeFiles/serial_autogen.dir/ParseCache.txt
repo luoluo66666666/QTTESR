@@ -373,6 +373,6 @@ E:/QTtemp/serial/mainwindow.h
  mdp:E:/QTtemp/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h
  mdp:E:/QTtemp/serial/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/serial_autogen/moc_predefs.h
  mdp:E:/QTtemp/serial/mainwindow.h
-E:/QTtemp/serial/main.cpp
 E:/QTtemp/serial/mainwindow.cpp
  uic:ui_mainwindow.h
+E:/QTtemp/serial/main.cpp

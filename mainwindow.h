@@ -9,9 +9,11 @@
 #include <QTimer>
 #include <QPainter>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
 
 class MainWindow : public QMainWindow
 {
@@ -52,6 +54,10 @@ private slots:
 
     void setNumOnLabel(QLabel *lbl, const QString &prefix, long num);
 
+    void setLedState(int color,int size);
+
+    void openFile();
+
 private:
     Ui::MainWindow *ui;
 
@@ -60,6 +66,7 @@ private:
     QLabel *lblSendNum;
     QLabel *lblRecvNum;
     QLabel *lblPortState;
+    QLabel *ledLabel;  // LED 标签指针
 
 
     // 定时发送-定时器
@@ -69,5 +76,6 @@ private:
     //串口连接状态
     bool isPortConnected = false;  // 初始状态为断开连接
 };
+
 #endif // MAINWINDOW_H
 

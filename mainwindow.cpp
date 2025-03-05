@@ -4,12 +4,26 @@
 #include <QSerialPort>
 #include <QMessageBox>
 #include <QDateTime>
+#include <QThread>
+#include <QSerialPortInfo>
+#include <QString>
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    // 在程序启动时清空 ledLabel 中的文字
+    ui->Led_status->setText("");
+    setLedState(0,16);
+
+
+    // 将打开文件点击信号与槽函数连接
+    connect(ui->Openfile_po, &QPushButton::clicked, this, &MainWindow::openFile);
 
     // 创建串口对象
     serialPort = new QSerialPort(this);
@@ -64,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 创建定时器，用于定时扫描串口状态
     portScanTimer = new QTimer(this);
-    portScanTimer->setInterval(5000);  // 每 5 秒扫描一次串口状态
+    portScanTimer->setInterval(50);  // 每 0.05 秒扫描一次串口状态
     connect(portScanTimer, &QTimer::timeout, this, &MainWindow::updatePortStatus);
     portScanTimer->start();  // 启动定时器
 }
@@ -85,6 +99,7 @@ void MainWindow::updatePortStatus()
     // 获取当前选择的串口名称
     QString selectedPort = ui->Serial_po->currentText();
 
+
     if (selectedPort.isEmpty()) {
         return;  // 如果没有选择串口，则不做任何操作
     }
@@ -98,29 +113,42 @@ void MainWindow::updatePortStatus()
         }
     }
 
-    // 检查串口是否在使用
-    QSerialPort testPort;
-    testPort.setPort(selectedPortInfo);
-    bool isUsed = testPort.open(QIODevice::ReadWrite);  // 尝试打开串口进行读写操作
+    // 创建一个临时串口对象来检查串口是否可以打开
+    QSerialPort testPort(selectedPort);
+    bool isUsed = false;
 
-    // 检查串口是否被占用
+    if (testPort.open(QIODevice::ReadWrite)) {
+        // 串口可以打开，表示未被占用
+        testPort.close();
+    } else {
+        // 串口无法打开，表示被占用
+        isUsed = true;
+    }
+
+    // 如果串口被占用
     if (isUsed) {
-        // 串口被占用
         if (!isPortConnected) {
             lblPortState->setText("Connected");
             lblPortState->setStyleSheet("color:green");  // 设置串口状态标签为绿色，表示已连接
             isPortConnected = true;  // 保存串口连接状态
+
+            setLedState(2,16);
         }
-        testPort.close();  // 使用完毕后关闭串口
     } else {
         // 串口未被占用
         if (isPortConnected) {
             lblPortState->setText("Disconnected");
             lblPortState->setStyleSheet("color:red");  // 设置串口状态标签为红色，表示未连接
             isPortConnected = false;  // 更新连接状态
+
+            setLedState(1,16);
         }
     }
 }
+
+
+
+
 
 
 /*检测通讯端口槽函数*/
@@ -261,6 +289,8 @@ QString MainWindow::processHexData(const QByteArray &recBuf)
 
     return str_rev;
 }
+
+
 
 /*打开串口函数*/
 void MainWindow::on_Openserial_po_clicked()
@@ -421,4 +451,77 @@ void MainWindow::on_Timesend_po_stateChanged(int arg1)
 }
 
 
+/*设置状态灯*/
+void MainWindow::setLedState(int color,int size)
+{
+    // 获取 LED 标签
+    ledLabel = ui->Led_status;
 
+    // // 将ledLabel中的文字清空
+    // ledLabel->setText("");
+    // 先设置矩形大小
+    // 如果ui界面设置的ledLabel大小比最小宽度和高度小，矩形将被设置为最小宽度和最小高度；
+    // 如果ui界面设置的ledLabel大小比最小宽度和高度大，矩形将被设置为最大宽度和最大高度；
+    QString min_width = QString("min-width: %1px;").arg(size);              // 最小宽度：size
+    QString min_height = QString("min-height: %1px;").arg(size);            // 最小高度：size
+    QString max_width = QString("max-width: %1px;").arg(size);              // 最小宽度：size
+    QString max_height = QString("max-height: %1px;").arg(size);            // 最小高度：size
+    // 再设置边界形状及边框
+    QString border_radius = QString("border-radius: %1px;").arg(size/2);    // 边框是圆角，半径为size/2
+    QString border = QString("border:1px solid black;");                    // 边框为1px黑色
+    // 最后设置背景颜色
+    QString background = "background-color:";
+    switch (color) {
+    case 0:
+        // 灰色
+        background += "rgb(190,190,190)";
+        break;
+    case 1:
+        // 红色
+        background += "rgb(255,0,0)";
+        break;
+    case 2:
+        // 绿色
+        background += "rgb(0,255,0)";
+        break;
+    case 3:
+        // 黄色
+        background += "rgb(255,255,0)";
+        break;
+    default:
+        break;
+    }
+
+    const QString SheetStyle = min_width + min_height + max_width + max_height + border_radius + border + background;
+    ledLabel->setStyleSheet(SheetStyle);
+
+}
+
+
+
+// 打开文件并显示文件内容
+void MainWindow::openFile()
+{
+    // 弹出文件选择对话框
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Text Files (*.txt);;All Files (*)"));
+
+    // 如果用户没有选择文件，则退出
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    // 打开文件
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        // 如果打开失败，弹出错误信息
+        QMessageBox::warning(this, tr("Error"), tr("Unable to open file"));
+        return;
+    }
+
+    // 读取文件内容
+    QTextStream in(&file);
+    QString fileContent = in.readAll();
+
+    // 在 QTextEdit 控件中显示文件内容
+    ui->Recvedit_po->setPlainText(fileContent);
+}

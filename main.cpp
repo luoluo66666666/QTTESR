@@ -8,5 +8,5 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     return a.exec();
-    //真吐了啊啊
+    //真吐了啊啊啊
 }
